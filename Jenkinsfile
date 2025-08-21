@@ -1,31 +1,25 @@
 pipeline {
-agent any 
-stages {
-stage('Build') {
-steps {
-sh 'sleep 5;echo "this us build stage"'
-}
-}
-stage('Test') {
-steps {
-sh 'sleep 5 echo "this us test stage"'
+    agent none
+    stages {
+        stage("BUILD") {
+            agent { label 'master' }
+            steps {
+                sh 'sleep 10; echo "this is a build stage"'
+            }
+        }
 
+        stage("DEPLOY") {
+            agent { label 'node1' }
+            steps {
+                sh 'sleep 10; echo "this is a deploy stage"'
+            }
+        }
 
-}
-}
-stage('Deploy') {
-steps {
-sh 'sleep 5 echo "this us deploy stage"'
-
-
-}
-}
-stage('My-stage') {
-steps {
-
-sh 'sleep 5'
-  
-}
-}
-}
+        stage("TEST") {
+            agent { label 'node1' }
+            steps {
+                sh 'sleep 10; echo "this is a test stage"'
+            }
+        }
+    }
 }
